@@ -1,0 +1,135 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  ASSESSOR
+  VIEWER
+}
+
+enum AssessmentStatus {
+  NOT_APPLIED
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum DepartmentStatus {
+  ACTIVE
+  INACTIVE
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  role         Role     @default(VIEWER)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  results   AssessmentResult[]
+  auditLogs AuditLog[]
+}
+
+model Department {
+  id          String           @id @default(cuid())
+  nameAr      String
+  nameEn      String
+  description String?
+  status      DepartmentStatus @default(ACTIVE)
+  sortOrder   Int              @default(0)
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+
+  perspectives Perspective[]
+
+  @@index([status])
+}
+
+model Perspective {
+  id           String   @id @default(cuid())
+  nameAr       String
+  nameEn       String
+  description  String?
+  sortOrder    Int      @default(0)
+  departmentId String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  department Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  domains    Domain[]
+
+  @@index([departmentId])
+}
+
+model Domain {
+  id            String   @id @default(cuid())
+  nameAr        String
+  nameEn        String
+  description   String?
+  sortOrder     Int      @default(0)
+  perspectiveId String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  perspective Perspective      @relation(fields: [perspectiveId], references: [id], onDelete: Cascade)
+  items       AssessmentItem[]
+
+  @@index([perspectiveId])
+}
+
+model AssessmentItem {
+  id          String   @id @default(cuid())
+  code        String?
+  titleAr     String
+  titleEn     String
+  description String?
+  sortOrder   Int      @default(0)
+  domainId    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  domain Domain            @relation(fields: [domainId], references: [id], onDelete: Cascade)
+  result AssessmentResult?
+
+  @@index([domainId])
+}
+
+model AssessmentResult {
+  id         String           @id @default(cuid())
+  itemId     String           @unique
+  status     AssessmentStatus @default(NOT_APPLIED)
+  score      Int              @default(0)
+  notes      String?
+  assessedBy String?
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+
+  item     AssessmentItem @relation(fields: [itemId], references: [id], onDelete: Cascade)
+  assessor User?          @relation(fields: [assessedBy], references: [id], onDelete: SetNull)
+
+  @@index([status])
+  @@index([assessedBy])
+}
+
+model AuditLog {
+  id        String   @id @default(cuid())
+  actorId   String?
+  action    String
+  entity    String
+  entityId  String?
+  metadata  Json?
+  createdAt DateTime @default(now())
+
+  actor User? @relation(fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([entity, entityId])
+  @@index([createdAt])
+  @@index([actorId])
+}

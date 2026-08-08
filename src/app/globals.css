@@ -1,0 +1,123 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:is(.dark *));
+
+:root {
+  --background: #f4f7f6;
+  --foreground: #12201d;
+  --card: #ffffffcc;
+  --card-foreground: #12201d;
+  --popover: #ffffff;
+  --popover-foreground: #12201d;
+  --primary: #0f6a5f;
+  --primary-foreground: #f4fffc;
+  --secondary: #e4efec;
+  --secondary-foreground: #18443d;
+  --muted: #e8efed;
+  --muted-foreground: #5b6f6a;
+  --accent: #d9ebe6;
+  --accent-foreground: #12352f;
+  --destructive: #c23b3b;
+  --border: #d5e2de;
+  --input: #d5e2de;
+  --ring: #0f6a5f;
+  --sidebar: #edf4f2;
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: #0b1412;
+  --foreground: #e7f2ef;
+  --card: #121c1a;
+  --card-foreground: #e7f2ef;
+  --popover: #121c1a;
+  --popover-foreground: #e7f2ef;
+  --primary: #2bb39f;
+  --primary-foreground: #04221d;
+  --secondary: #1a2925;
+  --secondary-foreground: #d7ebe5;
+  --muted: #1a2925;
+  --muted-foreground: #9bb2ab;
+  --accent: #1f322d;
+  --accent-foreground: #d7ebe5;
+  --destructive: #ef6b6b;
+  --border: #243632;
+  --input: #243632;
+  --ring: #2bb39f;
+  --sidebar: #0f1917;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-sidebar: var(--sidebar);
+  --font-sans: var(--font-ibm-plex-arabic);
+  --font-display: var(--font-cairo);
+  --radius-lg: var(--radius);
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgba(15, 106, 95, 0.12), transparent 55%),
+    radial-gradient(900px 500px at -10% 0%, rgba(43, 179, 159, 0.1), transparent 50%),
+    var(--background);
+  color: var(--foreground);
+  font-family: var(--font-ibm-plex-arabic), "Segoe UI", Tahoma, sans-serif;
+  min-height: 100vh;
+}
+
+.font-display {
+  font-family: var(--font-cairo), var(--font-ibm-plex-arabic), sans-serif;
+}
+
+.animate-fade-up {
+  animation: fade-up 0.55s ease both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.45s ease both;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
