@@ -2,19 +2,28 @@
 
 منصة ويب احترافية لإدارة وتقييم **جاهزية الإدارات** التابعة لوكالة التحول الرقمي.
 
-![DTAP Dashboard](docs/dashboard.png)
+> مشروع جاهز للعرض والمراجعة — مناسب للجنة التقييم.
 
-## نظرة عامة
+![لوحة مؤشرات DTAP](docs/dashboard.png)
 
-يتيح النظام إدارة هيكل التقييم وإدخال النتائج واحتساب النسب تلقائياً، مع تقارير وتصدير احترافي بصيغ PDF و Excel و CSV.
+---
 
-### الإدارات المدعومة (Seed)
+## هدف المشروع
+
+إنشاء منصة تمكّن من:
+
+- إدارة هيكل التقييم المؤسسي
+- إدخال نتائج التقييم ومتابعتها
+- احتساب نسب الجاهزية تلقائياً
+- إصدار تقارير وتصدير النتائج بشكل احترافي
+
+## الإدارات المشمولة
 
 1. إدارة البنية التحتية  
 2. إدارة الشبكات  
 3. إدارة التطبيقات والمشاريع  
 
-### هيكل التقييم
+## هيكل التقييم
 
 ```text
 الإدارة
@@ -23,7 +32,7 @@
          └─ عناصر التقييم (Assessment Items)
 ```
 
-### قواعد الاحتساب
+## قواعد التقييم والاحتساب
 
 | الحالة | النسبة |
 |--------|--------|
@@ -34,60 +43,32 @@
 - نسبة المحور = متوسط عناصره  
 - نسبة المنظور = متوسط محاوره  
 - نسبة الإدارة = متوسط مناظيرها  
-- إذا اكتملت كل المناظير → الحالة: **مكتمل بالكامل**
+- إذا اكتملت جميع المناظير بنسبة 100% تظهر حالة: **مكتمل بالكامل**
 
-## المميزات
+## ما يوفّره النظام
 
-- لوحة مؤشرات تفاعلية (KPI + Charts)
-- إدارة الإدارات / المناظير / المحاور
+- لوحة مؤشرات تفاعلية (KPI + رسوم بيانية)
+- إدارة الإدارات والمناظير والمحاور
 - صفحة تقييم مع حفظ تلقائي وتحديث فوري للنسب
-- تقارير: إنجاز، فجوات، محاور، إدارات
+- تقارير: إنجاز / فجوات / محاور / إدارات
 - مركز تصدير: PDF / Excel / CSV
 - صلاحيات: Admin / Assessor / Viewer
 - سجل تدقيق (Audit Logs)
-- واجهة عربية RTL + Dark/Light Mode
+- واجهة عربية RTL + Dark/Light Mode + تصميم متجاوب
 
-## التقنيات
+## التقنيات المستخدمة
 
-- **Frontend:** Next.js 15, TypeScript, Tailwind CSS, Shadcn UI, Recharts  
-- **Backend:** Next.js API Routes, Auth.js (Credentials)  
-- **Database:** PostgreSQL + Prisma ORM  
+| الطبقة | التقنية |
+|--------|---------|
+| Frontend | Next.js 15, TypeScript, Tailwind CSS, Shadcn UI, Recharts |
+| Backend | Next.js API Routes, Auth.js |
+| Database | PostgreSQL + Prisma ORM |
 
-## التشغيل السريع
-
-### Docker Compose
-
-```bash
-docker compose up -d
-cp .env.example .env
-npm install
-npm run db:setup
-npm run dev
-```
-
-### PostgreSQL محلي (Windows)
-
-```bash
-npm run db:start
-npm install
-npm run db:setup
-npm run dev
-```
-
-ثم افتح: [http://localhost:3000](http://localhost:3000)
-
-## حسابات تجريبية
-
-| الدور | البريد | كلمة المرور |
-|------|--------|-------------|
-| Admin | `admin@dtap.local` | `Admin@123` |
-| Assessor | `assessor@dtap.local` | `Assessor@123` |
-| Viewer | `viewer@dtap.local` | `Viewer@123` |
-
-## هيكل الصفحات
+## صفحات النظام
 
 | المسار | الوصف |
 |--------|--------|
+| `/login` | تسجيل الدخول |
 | `/dashboard` | لوحة المؤشرات |
 | `/departments` | الإدارات |
 | `/perspectives` | المناظير |
@@ -95,18 +76,51 @@ npm run dev
 | `/assessment` | إدخال التقييم |
 | `/reports` | التقارير |
 | `/export` | مركز التصدير |
-| `/admin/users` | المستخدمون (Admin) |
-| `/admin/audit` | سجل التدقيق (Admin) |
+| `/admin/users` | المستخدمون |
+| `/admin/audit` | سجل التدقيق |
 
-## أوامر مفيدة
+## تشغيل المشروع للمراجعة المحلية
 
 ```bash
-npm run db:migrate
-npm run db:seed
-npm run build
-npm run start
+# 1) تشغيل قاعدة البيانات
+docker compose up -d
+# أو على Windows: npm run db:start
+
+# 2) إعداد البيئة
+cp .env.example .env
+
+# 3) التثبيت وتهيئة البيانات
+npm install
+npm run db:setup
+
+# 4) التشغيل
+npm run dev
+```
+
+ثم افتح: [http://localhost:3000](http://localhost:3000)
+
+### حسابات تجريبية
+
+| الدور | البريد | كلمة المرور |
+|------|--------|-------------|
+| Admin | `admin@dtap.local` | `Admin@123` |
+| Assessor | `assessor@dtap.local` | `Assessor@123` |
+| Viewer | `viewer@dtap.local` | `Viewer@123` |
+
+## هيكل المستودع
+
+```text
+dtap/
+├── prisma/          # قاعدة البيانات + Seed
+├── src/app/         # الصفحات وواجهات API
+├── src/components/  # مكونات الواجهة
+├── src/lib/         # المنطق المشترك (scoring, auth, export)
+├── src/server/      # خدمات الخادم والصلاحيات
+├── docs/            # صور العرض
+└── docker-compose.yml
 ```
 
 ---
 
-**DTAP** — Digital Transformation Assessment Platform
+**DTAP** — Digital Transformation Assessment Platform  
+منصة تقييم التحول الرقمي
